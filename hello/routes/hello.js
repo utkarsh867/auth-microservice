@@ -8,7 +8,7 @@ router.get("/", function(req, res) {
 	if (req.headers && req.headers.authorization) {
 		try {
 			// The Bearer method adds a 'Bearer' in the start of the key
-			const token = req.headers.authorization.substring(7);]
+			const token = req.headers.authorization.substring(7);
 			req.user = jwt.verify(token, CONFIG.JWTSECRET);
 			res.send(`Hello ${req.user.username}`);
 		} catch (err) {
