@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 	});
 });
 
-app.use("/login", loginRouter);
-app.use("/register", registerRouter);
+app.route("/login").post(loginRouter);
+app.route("/register").post(registerRouter);
 
 module.exports = app;

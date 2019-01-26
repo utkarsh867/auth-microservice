@@ -1,10 +1,7 @@
-let express = require("express");
-let router = express.Router();
-
 let CONFIG = require("../config");
 let jwt = require("jsonwebtoken");
 
-router.post("/", (req, res) => {
+function Login(req, res) {
 	let db = req.db;
 	if (
 		db.getCollection("users").findOne({ username: req.body.username }) === null
@@ -38,6 +35,6 @@ router.post("/", (req, res) => {
 			});
 		}
 	}
-});
+}
 
-module.exports = router;
+module.exports = Login;
