@@ -6,11 +6,9 @@ function getDatabase(callback) {
 		autoload: true,
 		autoloadCallback: () => {
 			if (db.getCollection("users") === null) {
-				console.log("Creating collection");
 				db.addCollection("users");
 				callback(db);
 			} else {
-				console.log("Collection user exists");
 				callback(db);
 			}
 		},
@@ -19,7 +17,7 @@ function getDatabase(callback) {
 	});
 }
 
-test("User sends request to login", done => {
+test("User sends request to login with correct username and password", done => {
 	getDatabase(db => {
 		const response = login.findUserAndSign({
 			db: db,
@@ -28,14 +26,32 @@ test("User sends request to login", done => {
 				password: "utkarshgoel867"
 			}
 		});
-		expect(response.status).toEqual(200);
-
 		/**
 		 * NOTE: Not closing the database will cause tests to hang
 		 * This took me forever to debug since it won't even show on --detectOpenHandle.
 		 *
 		 */
 		db.close();
+
+		expect(response.status).toEqual(200);
+		expect(response.message.username).toEqual('utkarsh');
+		expect(response.message.jwt).toBeDefined();
+		done();
+	});
+});
+
+test("User sends request to login with incorrect username and password", done => {
+	getDatabase(db => {
+		const response = login.findUserAndSign({
+			db: db,
+			body: {
+				username: "utkarsh",
+				password: "utkarshgoel"
+			}
+		});
+		db.close();
+
+		expect(response.status).toEqual(401);
 		done();
 	});
 });
