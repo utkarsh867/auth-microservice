@@ -1,20 +1,24 @@
-var express = require('express');
-var router = express.Router();
-
-router.post('/', (req, res) => {
-	if(req.body && req.body.username){
+function DoRegistration(req) {
+	if (req.body && req.body.username) {
 		let db = req.db;
-		if(db.getCollection('users').findOne({username: req.body.username}) === null){
-			db.getCollection('users').insert({username: req.body.username, password: req.body.password});
-			res.send("Registered");
+		let users = db.getCollection("users");
+		if (users.findOne({ username: req.body.username }) === null) {
+			users.insert({
+				username: req.body.username,
+				password: req.body.password
+			});
+			return { status: 200, message: "Registered" };
+		} else {
+			return { status: 401, message: "User exists" };
 		}
-		else{
-			res.send("User already exists")
-		}
+	} else {
+		return { status: 401, message: "Error in database" };
 	}
-	else{
-		res.send("There was an error");
-	}
-});
+}
 
-module.exports = router;
+function Register(req, res) {
+	const response = DoRegistration(req);
+	res.status(response.status).json(response.message);
+}
+
+module.exports = { Register, DoRegistration};
