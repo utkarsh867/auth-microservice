@@ -6,3 +6,5 @@ Create two microservices which utilize a JWT token authentication system and sec
 - Framework: Express Node.js 11
 - Testing: Jest
 - Protocol: HTTP
+
+Postman was used during development to make API requests locally.
