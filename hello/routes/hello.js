@@ -1,30 +1,24 @@
-let express = require("express");
-let router = express.Router();
 let jwt = require("jsonwebtoken");
 let CONFIG = require("../config");
 
-/* GET home page. */
-router.get("/", function(req, res) {
+function VerifyJWT(req) {
 	if (req.headers && req.headers.authorization) {
 		try {
 			// The Bearer method adds a 'Bearer' in the start of the key
 			const token = req.headers.authorization.substring(7);
 			req.user = jwt.verify(token, CONFIG.JWTSECRET);
-			res.send(`Hello ${req.user.username}`);
+			return { status: 200, message: `Hello ${req.user.username}` };
 		} catch (err) {
-			return res.status(401).json({
-				error: {
-					msg: "Authentication of the JWT token failed!"
-				}
-			});
+			return { status: 401, message: "JWT invalid" };
 		}
 	} else {
-		return res.status(401).json({
-			error: {
-				msg: "There was no JWT Token"
-			}
-		});
+		return { status: 401, message: "No token provided" };
 	}
-});
+}
 
-module.exports = router;
+function Hello(req, res) {
+	const response = VerifyJWT(req);
+	res.status(response.status).json(response.message);
+}
+
+module.exports = { Hello, VerifyJWT };
