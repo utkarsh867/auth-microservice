@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 	});
 });
 
-app.route("/login").post(loginRouter.findUserAndSign);
+app.route("/login").post(loginRouter.Login);
 app.route("/register").post(registerRouter.Register);
 
 module.exports = app;
