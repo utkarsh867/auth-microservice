@@ -1,33 +1,43 @@
-let CONFIG = require("../config");
 let jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+function signJwtToken(username, password) {
+	return jwt.sign(
+		{
+			username: username,
+			password: password
+		},
+		process.env.JWTSECRET,
+		{ expiresIn: 120 }
+	);
+}
 
 function findUserAndSign(req) {
 	let db = req.db;
-	if (
-		db.getCollection("users").findOne({ username: req.body.username }) === null
-	) {
-		return {status: 401, message: "Bad request"};
+	let users = db.getCollection("users");
+
+	let responseMessage = {
+		status: 0,
+		message: ""
+	};
+
+	if (users.findOne({ username: req.body.username }) === null) {
+		responseMessage.status = 401;
+		responseMessage.message = "No such user";
+		return responseMessage;
 	} else {
 		let userDetails = db
 			.getCollection("users")
 			.findOne({ username: req.body.username });
-		if (userDetails.password === req.body.password) {
-			return {
-				status: 200,
-				message: {
-					username: req.body.username,
-					jwt: jwt.sign(
-						{
-							username: req.body.username,
-							password: req.body.password
-						},
-						CONFIG.JWTSECRET,
-						{ expiresIn: 120 }
-					)
-				}
-			}
+		let token = signJwtToken(req.body.username, req.body.password);
+		if (bcrypt.compareSync(req.body.password, userDetails.password)) {
+			responseMessage.status = 200;
+			responseMessage.message = { username: req.body.username, jwt: token };
+			return responseMessage;
 		} else {
-			return {status: 401, message: "Bad request"};
+			responseMessage.status = 401;
+			responseMessage.message = "Bad request";
+			return responseMessage;
 		}
 	}
 }
@@ -35,40 +45,6 @@ function findUserAndSign(req) {
 function Login(req, res) {
 	const response = findUserAndSign(req);
 	res.status(response.status).json(response.message);
-
-	// let db = req.db;
-	// if (
-	// 	db.getCollection("users").findOne({ username: req.body.username }) === null
-	// ) {
-	// 	res.status(401).json({
-	// 		error: {
-	// 			message: "Bad username or password"
-	// 		}
-	// 	});
-	// } else {
-	// 	let userDetails = db
-	// 		.getCollection("users")
-	// 		.findOne({ username: req.body.username });
-	// 	if (userDetails.password === req.body.password) {
-	// 		res.status(200).json({
-	// 			username: req.body.username,
-	// 			jwt: jwt.sign(
-	// 				{
-	// 					username: req.body.username,
-	// 					password: req.body.password
-	// 				},
-	// 				CONFIG.JWTSECRET,
-	// 				{ expiresIn: 120 }
-	// 			)
-	// 		});
-	// 	} else {
-	// 		res.status(401).json({
-	// 			error: {
-	// 				message: "Bad password"
-	// 			}
-	// 		});
-	// 	}
-	// }
 }
 
-module.exports = {Login, findUserAndSign};
+module.exports = { Login, findUserAndSign };

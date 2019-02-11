@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "PORT=6010 node ./bin/www",
-    "test": "jest"
+    "start": "JWTSECRET=ITSSOSECRET PORT=6010 node ./bin/www",
+    "test": "JWTSECRET=ITSSOSECRET jest"
   },
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
