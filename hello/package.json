@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "JWTSECRET=ITSSOSECRET PORT=6020 node ./bin/www",
-    "test": "JWTSECRET=ITSSOSECRET jest"
+    "start": "node ./bin/www",
+    "test": "jest"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

@@ -2,6 +2,9 @@ version: "3"
 services:
   authentication:
     build: ./authentication
+    environment:
+      - JWTSECRET=ITSSOSECRET
+      - PORT=6010
     volumes:
       - ./authentication:/usr/src/app
       - /usr/src/app/node_modules
@@ -9,6 +12,9 @@ services:
       - 6010:6010
   hello:
     build: ./hello
+    environment:
+      - JWTSECRET=ITSSOSECRET
+      - PORT=6020
     volumes:
       - ./hello:/usr/src/app
       - /usr/src/app/node_modules
