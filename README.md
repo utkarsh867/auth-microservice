@@ -28,3 +28,5 @@ Install all the dependencies
 
 Start the deployment locally   
 `PORT=<PORT-NO> npm start`   
+
+* Note that environment variable JWTSECRET must be defined when running the application during development and tests.
