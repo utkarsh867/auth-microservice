@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/utkarsh867/my-kintohub-test.svg?branch=master)](https://travis-ci.org/utkarsh867/my-kintohub-test)
 # Submission for the test
 
 ## Dependencies for deployment
