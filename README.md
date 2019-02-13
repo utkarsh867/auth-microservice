@@ -1,8 +1,8 @@
 # Submission for the test
 
-## Dependencies
-* docker - Install docker and make sure that the deamon is running
-* docker-compose - Install docker-compose for the command-line.
+## Dependencies for deployment
+* `docker` - Install docker and make sure that the deamon is running
+* `docker-compose` - Install docker-compose for the command-line.
 
 ## How to run the deployment
 
