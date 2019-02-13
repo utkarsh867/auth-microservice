@@ -3,6 +3,8 @@ WORKDIR usr/src/app
 COPY package.json ./
 RUN npm install
 COPY . .
+ENV JWTSECRET=ITSSOSECRET
+ENV PORT=6010
 RUN npm test
 EXPOSE 6010
 CMD ["npm", "start"]
