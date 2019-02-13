@@ -22,7 +22,9 @@ The applications can be tested locally by running each of them separately
 
 Move into the directory   
 `cd <microservice>`   
+
 Install all the dependencies   
 `npm install`   
+
 Start the deployment locally   
 `PORT=<PORT-NO> npm start`   
