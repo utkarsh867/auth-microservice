@@ -29,4 +29,14 @@ Install all the dependencies
 Start the deployment locally   
 `PORT=<PORT-NO> npm start`   
 
-### Note that environment variable JWTSECRET must be defined when running the application during development and tests.
+## How to run the development environment
+Move into the directory   
+`cd <microservice>`   
+
+Install all the dependencies   
+`npm install`   
+
+Start the deployment locally   
+`PORT=<PORT-NO> npm run dev`   
+
+#### Note that environment variable `JWTSECRET` must be defined when running the application during development and tests.
